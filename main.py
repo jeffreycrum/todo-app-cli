@@ -1,51 +1,50 @@
-
-
-def read_todos():
-    with open('files/todos.txt', 'r') as file:
-        content = file.readlines()
-    return content
-
-
-def write_todos(content):
-    with open('files/todos.txt', 'w') as file:
-        file.writelines(content)
-
+import util
 
 while True:
-    user_action = input("Type add, show, edit, complete, or exit")
+    user_action = input("Type add <todo>, show, edit <number>, complete <number>, or exit")
     user_action = user_action.strip()
 
-    if 'add' in user_action or 'new' in user_action:
-        if len(user_action) > 3:
-            todo = user_action[4:]
-        else:
-            todo = input("Enter a todo: ") + "\n"
-        todos = read_todos()
-        todos.append(todo)
+    if user_action.startswith('add') or user_action.startswith('new'):
+        todo = user_action[4:]
+        todos = util.read_todos('files/todos.txt')
+        todos.append(todo + '\n')
 
-        write_todos(todos)
-    elif 'show' in user_action:
-        todos = read_todos()
+        util.write_todos(todos)
+
+    elif user_action.startswith('show'):
+        todos = util.read_todos()
 
         for index, item in enumerate(todos):
             print(f"{index + 1}: {item.strip("\n")}")
-    elif 'edit' in user_action:
-        number = int(input("Number of the todo to edit: "))
-        index = number - 1
-        new_todo = input("Enter the new todo: ") + "\n"
-        todos = read_todos()
-        todos[index] = new_todo
-        write_todos(todos)
-    elif 'complete' in user_action:
-        number = int(input("Number of the todo to complete: "))
-        todos = read_todos()
-        index = number - 1
-        removed = todos[index].strip("\n")
-        todos.pop(index)
-        write_todos(todos)
-        print(f"Todo {removed} was removed from the list")
-    elif 'exit' in user_action:
+
+    elif user_action.startswith('edit'):
+        try:
+            number = int(user_action[5:])
+            index = number - 1
+            new_todo = input("Enter the new todo: ") + "\n"
+            todos = util.read_todos()
+            todos[index] = new_todo
+            util.write_todos(todos)
+        except IndexError:
+            print("Your command is not valid")
+            continue
+
+    elif user_action.startswith('complete'):
+        try:
+            number = int(user_action[9:])
+            todos = util.read_todos()
+            index = number - 1
+            removed = todos[index].strip("\n")
+            todos.pop(index)
+            util.write_todos(todos)
+            print(f"Todo {removed} was removed from the list")
+        except IndexError:
+            print("There's no item with that number")
+            continue
+
+    elif user_action.startswith('exit'):
         break
+
     else:
         print("That was not a valid option.")
 
