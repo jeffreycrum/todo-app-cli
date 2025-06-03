@@ -28,10 +28,24 @@
 #
 # print(fahrenheit)
 
-def calculate_time(h, g=9.80665):
-    t = (2 * h / g) ** 0.5
-    return t
+# def calculate_time(h, g=9.80665):
+#     t = (2 * h / g) ** 0.5
+#     return t
+#
+#
+# time = calculate_time(123)
+# print(time)
 
+from parsers import parse
+import random
 
-time = calculate_time(123)
-print(time)
+# Ask the user to enter a lower and an upper bound divided by a comma
+user_input = input("Enter a lower bound and an upper bound divided a comma (e.g., 2,10)")
+
+# Parse the user string by calling the parse function
+parsed = parse(user_input)
+
+# Pick a random int between the two numbers
+rand = random.randint(parsed['lower_bound'], parsed['upper_bound'])
+
+print(rand)

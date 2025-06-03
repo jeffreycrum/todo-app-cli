@@ -1,6 +1,10 @@
+import time
+
 import util
 
 while True:
+    time = time.strftime("$b %d, %Y %H:%M:%S")
+    print(f"The current time is {time}")
     user_action = input("Type add <todo>, show, edit <number>, complete <number>, or exit")
     user_action = user_action.strip()
 
