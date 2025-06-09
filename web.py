@@ -15,8 +15,12 @@ st.title("My Todo App")
 st.subheader("this is my todo app")
 st.write("This app is to increase your productivity")
 
-for todo in todos:
-    st.checkbox(todo, key=todo)
+for index, todo in enumerate(todos):
+    checkbox = st.checkbox(todo, key=todo)
+    if checkbox:
+        todos.pop(index)
+        util.write_todos(todos)
+        del st.session_state[todo]
 
 st.text_input(
     label="",
